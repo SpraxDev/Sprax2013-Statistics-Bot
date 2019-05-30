@@ -1,0 +1,26 @@
+{
+  "name": "sprax2013-statistics-bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sprax2013/Sprax2013-Statistics-Bot.git"
+  },
+  "author": "Sprax2013",
+  "license": "MIT",
+  "dependencies": {
+    "discord.js": "^11.5.1",
+    "nodemon": "^1.19.1",
+    "request": "^2.88.0"
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "./storage"
+    ]
+  }
+}
