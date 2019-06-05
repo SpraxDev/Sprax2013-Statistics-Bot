@@ -5,6 +5,8 @@ const request = require('request'),
 let data = getData();
 const botToken = data['BotToken'];
 
+let failuresWSB = 0, failuresSkinDB = 0;
+
 updateWSB();
 updateSkinDB();
 
@@ -82,21 +84,28 @@ function updateWSB() {
           if (err) return console.error(err);
 
           if (res.statusCode !== 200) {
-            request('https://discordapp.com/api/channels/582799725435158528/messages', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bot ${botToken}`
-              },
-              body: reqBody
-            }, (err, res, body) => {
-              if (err) return console.error(err);
+            failuresWSB++;
 
-              if (res.statusCode !== 200) return console.error('API-Request failed: ', body);
+            if (!lastMsgID || failuresWSB >= 2) {
+              request('https://discordapp.com/api/channels/582799725435158528/messages', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  Authorization: `Bot ${botToken}`
+                },
+                body: reqBody
+              }, (err, res, body) => {
+                if (err) return console.error(err);
+                if (res.statusCode !== 200) return console.error('API-Request failed: ', body);
 
-              data['Stats']['WSB'][channelID] = JSON.parse(body).id;
-              setData();
-            });
+                failuresWSB = 0;
+
+                data['Stats']['WSB'][channelID] = JSON.parse(body).id;
+                setData();
+              });
+            }
+          } else {
+            failuresWSB = 0;
           }
         });
       }
@@ -107,7 +116,7 @@ function updateWSB() {
 function updateSkinDB() {
   request('https://api.skindb.net/stats', (err, res, body) => {
     if (err) return console.error(err);
-    if (res.statusCode !== 200) return console.error('API-Request failed: ', body)
+    if (res.statusCode !== 200) return console.error(`API-Request failed (Status ${res.statusCode}):`, body);
 
     body = JSON.parse(body);
 
@@ -125,7 +134,7 @@ function updateSkinDB() {
               url: 'https://skindb.net/img/Logo.png'
             },
             author: {
-              name: 'Workshop Browser',
+              name: 'SkinDB',
               url: 'https://SkinDB.net/',
               icon_url: 'https://skindb.net/img/Logo.png'
             },
@@ -155,21 +164,28 @@ function updateSkinDB() {
           if (err) return console.error(err);
 
           if (res.statusCode !== 200) {
-            request(`https://discordapp.com/api/channels/${channelID}/messages`, {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bot ${botToken}`
-              },
-              body: reqBody
-            }, (err, res, body) => {
-              if (err) return console.error(err);
+            failuresSkinDB++;
 
-              if (res.statusCode !== 200) return console.error('API-Request failed: ', body);
+            if (!lastMsgID || failuresSkinDB >= 2) {
+              request(`https://discordapp.com/api/channels/${channelID}/messages`, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  Authorization: `Bot ${botToken}`
+                },
+                body: reqBody
+              }, (err, res, body) => {
+                if (err) return console.error(err);
+                if (res.statusCode !== 200) return console.error('API-Request failed: ', body);
 
-              data['Stats']['SkinDB'][channelID] = JSON.parse(body).id;
-              setData();
-            });
+                failuresSkinDB = 0;
+
+                data['Stats']['SkinDB'][channelID] = JSON.parse(body).id;
+                setData();
+              });
+            }
+          } else {
+            failuresSkinDB = 0;
           }
         });
       }
