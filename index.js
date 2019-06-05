@@ -1,6 +1,8 @@
 const request = require('request'),
   fs = require('fs'),
   Discord = require('discord.js');
+const formatNumber = new Intl.NumberFormat('en').format;
+
 
 let data = getData();
 const botToken = data['BotToken'];
@@ -53,21 +55,21 @@ function updateWSB() {
             fields: [
               {
                 name: 'Games',
-                value: `${body['estGameCount']}`
+                value: formatNumber(body['estGameCount'])
               },
               {
                 name: 'User',
-                value: `${body['estUserCount']}`,
+                value: formatNumber(body['estUserCount']),
                 inline: true
               },
               {
                 name: 'User with Uploads',
-                value: `${body['userCountWithUploads']}`,
+                value: formatNumber(body['userCountWithUploads']),
                 inline: true
               },
               {
                 name: 'Files uploaded',
-                value: `${body['estFileUploads']}`
+                value: formatNumber(body['estFileUploads'])
               }
             ]
           }
@@ -141,12 +143,12 @@ function updateSkinDB() {
             fields: [
               {
                 name: 'Skins',
-                value: `${body['estSkinCount']}`,
+                value: formatNumber(body['estSkinCount']),
                 inline: true
               },
               {
                 name: 'Duplicates',
-                value: `${body['duplicateSkinCount']}`,
+                value: formatNumber(body['duplicateSkinCount']),
                 inline: true
               }
             ]
