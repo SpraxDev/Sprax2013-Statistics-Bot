@@ -9,10 +9,10 @@ const botToken = data['BotToken'];
 
 let failuresWSB = 0, failuresSkinDB = 0;
 
-updateWSB();
+// updateWSB();
 updateSkinDB();
 
-setInterval(updateWSB, 1000 * 60 * 15);
+// setInterval(updateWSB, 1000 * 60 * 15);
 setInterval(updateSkinDB, 1000 * 60 * 15);
 
 const client = new Discord.Client();
