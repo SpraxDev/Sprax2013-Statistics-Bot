@@ -22,7 +22,11 @@ client.on('error', (err) => {
 client.login(botToken);
 
 function updateSkinDB() {
-  request('https://api.skindb.net/stats', (err, res, body) => {
+  request('https://api.skindb.net/stats', {
+    auth: {
+      bearer: data['SpraxAPI_Token']
+    }
+  }, (err, res, body) => {
     if (err) return console.error(err);
     if (res.statusCode !== 200) return console.error(`API-Request failed (Status ${res.statusCode}):`, body);
 
@@ -56,6 +60,13 @@ function updateSkinDB() {
               {
                 name: 'Duplicates',
                 value: formatNumber(body['duplicateSkinCount']),
+                inline: true
+              },
+
+              /* Line 2 */
+              {
+                name: 'Generated Today',
+                value: formatNumber(body['advanced']['last24h']),
                 inline: true
               }
             ]
@@ -109,6 +120,7 @@ function getData() {
 
   fs.writeFileSync('./storage/data.json', JSON.stringify({
     BotToken: "BOT_TOKEN_HERE",
+    SpraxAPI_Token: "SPRAXAPI_TOKEN_HERE",
 
     Stats: {
       SkinDB: {}
