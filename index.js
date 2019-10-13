@@ -35,7 +35,7 @@ function updateSkinDB() {
         let reqBody = JSON.stringify({
           embed: {
             title: '**Statistics | SkinDB**',
-            url: 'https://SkinDB.net/',
+            url: 'https://skindb.net/',
             color: 16738378,
             timestamp: new Date().toISOString(),
             thumbnail: {
@@ -43,10 +43,11 @@ function updateSkinDB() {
             },
             author: {
               name: 'SkinDB',
-              url: 'https://SkinDB.net/',
+              url: 'https://skindb.net/stats',
               icon_url: 'https://skindb.net/img/Logo.png'
             },
             fields: [
+              /* Line 1 */
               {
                 name: 'Skins',
                 value: formatNumber(body['estSkinCount']),
@@ -110,10 +111,9 @@ function getData() {
     BotToken: "BOT_TOKEN_HERE",
 
     Stats: {
-      SkinDB: {
-      }
+      SkinDB: {}
     }
-  }));
+  }, null, 4));
   setData();
   return getData();
 }
