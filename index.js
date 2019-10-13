@@ -19,6 +19,36 @@ client.on('error', (err) => {
   console.error(err);
 });
 
+client.on('guildMemberAdd', async (member) => {
+  const channel = client.channels.get(data['JoinLeaveChannelID']);
+  if (!channel) return;
+
+  channel.send(new Discord.RichEmbed()
+    .setTitle('Admin-Info')
+    .setColor('#00ff48')
+    .setDescription(`${member.user.username} joined the server`)
+    .setImage(member.user.displayAvatarURL)
+    .addField('User Tag', member.user.tag, true)
+    .addField('ID', member.user.id, true)
+    .setTimestamp()
+  );
+});
+
+client.on('guildMemberRemove', async (member) => {
+  const channel = client.channels.get(data['JoinLeaveChannelID']);
+  if (!channel) return;
+
+  channel.send(new Discord.RichEmbed()
+    .setTitle('Admin-Info')
+    .setColor('#ff0000')
+    .setDescription(`${member.user.username} left the server`)
+    .setImage(member.user.displayAvatarURL)
+    .addField('User Tag', member.user.tag, true)
+    .addField('ID', member.user.id, true)
+    .setTimestamp()
+  );
+});
+
 client.login(botToken);
 
 function updateSkinDB() {
@@ -121,6 +151,8 @@ function getData() {
   fs.writeFileSync('./storage/data.json', JSON.stringify({
     BotToken: "BOT_TOKEN_HERE",
     SpraxAPI_Token: "SPRAXAPI_TOKEN_HERE",
+
+    JoinLeaveChannelID: "DISCORD_CHANNEL_ID",
 
     Stats: {
       SkinDB: {}
