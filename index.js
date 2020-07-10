@@ -32,6 +32,10 @@ client.on('guildMemberAdd', async (member) => {
     .addField('ID', member.user.id, true)
     .setTimestamp()
   );
+
+  if (!member.user.bot) {
+    member.addRole('636554066910117918');
+  }
 });
 
 client.on('guildMemberRemove', async (member) => {
