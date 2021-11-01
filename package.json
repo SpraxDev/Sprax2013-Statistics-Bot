@@ -14,7 +14,7 @@
   "author": "Sprax2013",
   "license": "MIT",
   "dependencies": {
-    "discord.js": "^12.5.3",
+    "discord.js": "^13.3.0",
     "nodemon": "^2.0.7",
     "request": "^2.88.2"
   },
